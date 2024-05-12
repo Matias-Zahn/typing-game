@@ -6,9 +6,28 @@ interface GameProps {
     precision: number;
     window: string;
     setWindow: React.Dispatch<string>;
+    setScore: React.Dispatch<number>;
+    setErrors: React.Dispatch<number>;
+    setPrecision: React.Dispatch<number>;
 }
 
-function Results({ score, errors, precision, window, setWindow }: GameProps) {
+function Results({
+    score,
+    errors,
+    precision,
+    window,
+    setWindow,
+    setErrors,
+    setPrecision,
+    setScore,
+}: GameProps) {
+    const handleButtom = () => {
+        setErrors(0);
+        setPrecision(0);
+        setScore(0);
+        setWindow('Game');
+    };
+
     return (
         <section
             className={`${
@@ -28,12 +47,12 @@ function Results({ score, errors, precision, window, setWindow }: GameProps) {
                     Congratulations
                 </h1>
                 <p>Score : {score} </p>
-                <p>Precision: {precision} </p>
+                <p>Precision: {precision}% </p>
                 <p>Errors: {errors} </p>
 
                 <button
-                    onClick={() => setWindow('Game')}
-                    className="text-center bg-white rounded-full p-2 "
+                    onClick={handleButtom}
+                    className="bg-white rounded-full p-2 grid place-content-center"
                 >
                     <IconRepeat color="blue" size={40} />
                 </button>

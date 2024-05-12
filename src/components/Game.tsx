@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { MenuProps } from '../interfaces/menu.interface';
 import Results from './Results';
 
-const wordsList = ['HOLA', 'COMO', 'ESTAS', 'PEPE', 'COLORADO', 'MARRON'];
+const wordsList = ['hola', 'como', 'estas', 'pepe', 'colorado', 'marron'];
 
 function Game({ window, setWindow }: MenuProps): JSX.Element {
     const [word, setWord] = useState('');
@@ -18,13 +18,17 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
     };
 
     const handleWord = (event: ChangeEvent): void => {
-        const wordInput = (event.target as HTMLInputElement).value;
+        const wordInput = (
+            event.target as HTMLInputElement
+        ).value.toLowerCase();
 
         const longitud = Math.min(wordInput.length, word.length);
 
-        let correctWords = 0;
+        let totalWords = 0;
 
         for (let i = 0; i < longitud; i++) {
+            totalWords++;
+
             if (wordInput[i] !== word[i]) {
                 setErrors(errors + 1);
                 setScore(score - 10);
@@ -32,17 +36,28 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
 
             if (wordInput[i] === word[i]) {
                 setScore(score + 10);
-                correctWords++;
             }
         }
 
-        const porcentaje = ((correctWords - errors) / correctWords) * 100;
+        const porcentaje = Math.floor(
+            ((totalWords - errors) / totalWords) * 100
+        );
 
-        setPrecision(porcentaje);
+        //CONTROLAR LA PRECISION Y QUE NO BAJE DE 0
+        if (porcentaje < 0 || score < 0) {
+            setPrecision(0);
+            setScore(0);
+        } else {
+            setPrecision(porcentaje);
+        }
 
         if (wordInput.length && wordInput === word) {
             (event.target as HTMLInputElement).value = '';
             setWord(randomWord);
+        }
+
+        if (window === 'Results') {
+            (event.target as HTMLInputElement).value = '';
         }
     };
 
@@ -84,6 +99,10 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
                             <p>Score:</p>
                             <p>{score}</p>
                         </div>
+                        <div>
+                            <p>precision:</p>
+                            <p>{precision}</p>
+                        </div>
                     </div>
 
                     <div>
@@ -92,10 +111,12 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
                 </article>
 
                 <div className="grid place-content-center text-center gap-5">
-                    <h1>{word}</h1>
+                    <h1 className="text-2xl uppercase tracking-widest font-bold bg-black text-white rounded-lg py-2">
+                        {word}
+                    </h1>
                     <input
                         onChange={handleWord}
-                        className="outline-none"
+                        className="outline-none p-2  rounded-xl"
                         type="text"
                         autoFocus
                         autoComplete="off"
@@ -108,6 +129,9 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
                 errors={errors}
                 precision={precision}
                 score={score}
+                setScore={setScore}
+                setErrors={setErrors}
+                setPrecision={setPrecision}
             />
         </>
     );
