@@ -75,6 +75,7 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
     useEffect(() => {
         if (!timer) {
             setWindow('Results');
+            setInput(true);
         }
     }, [timer, setWindow, setInput]);
 
@@ -84,11 +85,11 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
                 className={` ${
                     window !== 'Game'
                         ? 'h-0 overflow-hidden'
-                        : 'min-h-screen p-4 grid grid-rows-[auto_1fr]'
+                        : 'min-h-screen p-4 grid grid-rows-[auto_1fr] max-w-5xl mx-auto'
                 }`}
             >
                 <article className="flex justify-between">
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 bg-black text-white p-4 rounded-lg">
                         <div>
                             <p>Errores:</p>
                             <p>{errors}</p>
