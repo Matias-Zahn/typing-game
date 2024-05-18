@@ -10,6 +10,7 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
     const [errors, setErrors] = useState(0);
     const [score, setScore] = useState(0);
     const [timer, setTimer] = useState(true);
+    const [input, setInput] = useState(false);
 
     const randomWord = (): string => {
         const numberOfElements = Math.ceil(Math.random() * wordsList.length);
@@ -17,10 +18,8 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
         return wordsList[numberOfElements - 1];
     };
 
-    const handleWord = (event: ChangeEvent): void => {
-        const wordInput = (
-            event.target as HTMLInputElement
-        ).value.toLowerCase();
+    const handleWord = (event: ChangeEvent<HTMLInputElement>): void => {
+        const wordInput = event.target.value.toLowerCase();
 
         const longitud = Math.min(wordInput.length, word.length);
 
@@ -57,7 +56,7 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
         }
 
         if (window === 'Results') {
-            (event.target as HTMLInputElement).value = '';
+            event.target.value = '';
         }
     };
 
@@ -70,15 +69,14 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
             setTimeout(() => {
                 setTimer(false);
             }, 10000);
-
-            // SOLO LLEGA ACA SI WINDOW ES GAME
-            if (!timer) setTimer(true);
         }
-    }, [window, setTimer, timer]);
+    }, [window, setTimer, setInput]);
 
     useEffect(() => {
-        if (!timer) setWindow('Results');
-    }, [timer, setWindow]);
+        if (!timer) {
+            setWindow('Results');
+        }
+    }, [timer, setWindow, setInput]);
 
     return (
         <>
@@ -115,10 +113,11 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
                         {word}
                     </h1>
                     <input
+                        disabled={input}
                         onChange={handleWord}
                         className="outline-none p-2  rounded-xl"
                         type="text"
-                        autoFocus
+                        autoFocus={!input}
                         autoComplete="off"
                     />
                 </div>
@@ -132,6 +131,8 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
                 setScore={setScore}
                 setErrors={setErrors}
                 setPrecision={setPrecision}
+                setInput={setInput}
+                setTimer={setTimer}
             />
         </>
     );

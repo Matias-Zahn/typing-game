@@ -1,4 +1,5 @@
 import { IconRepeat } from '@tabler/icons-react';
+import React from 'react';
 
 interface GameProps {
     score: number;
@@ -9,6 +10,8 @@ interface GameProps {
     setScore: React.Dispatch<number>;
     setErrors: React.Dispatch<number>;
     setPrecision: React.Dispatch<number>;
+    setInput: React.Dispatch<boolean>;
+    setTimer: React.Dispatch<boolean>;
 }
 
 function Results({
@@ -20,12 +23,16 @@ function Results({
     setErrors,
     setPrecision,
     setScore,
+    setInput,
+    setTimer,
 }: GameProps) {
     const handleButtom = () => {
         setErrors(0);
         setPrecision(0);
         setScore(0);
         setWindow('Game');
+        setInput(false);
+        setTimer(true);
     };
 
     return (

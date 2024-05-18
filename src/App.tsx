@@ -50,7 +50,6 @@ function App(): JSX.Element {
                         className="flex rounded-xl border border-black overflow-hidden"
                     >
                         <input
-                            autoFocus
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}
                             autoComplete="off"
