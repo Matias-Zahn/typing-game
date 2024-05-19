@@ -1,4 +1,4 @@
-import { IconRepeat } from '@tabler/icons-react';
+import { IconRepeat, IconX } from '@tabler/icons-react';
 import React from 'react';
 
 interface GameProps {
@@ -26,11 +26,11 @@ function Results({
     setInput,
     setTimer,
 }: GameProps) {
-    const handleButtom = () => {
+    const handleButtom = (window: string): void => {
         setErrors(0);
         setPrecision(0);
         setScore(0);
-        setWindow('Game');
+        setWindow(window);
         setInput(false);
         setTimer(true);
     };
@@ -53,12 +53,18 @@ function Results({
                 <h1 className=" text-center font-bold text-2xl uppercase">
                     Congratulations
                 </h1>
+                <button
+                    onClick={() => handleButtom('Menu')}
+                    className="absolute right-2 top-2 p-1 bg-white rounded-full"
+                >
+                    <IconX color="black" size={18} />
+                </button>
                 <p>Score : {score} </p>
                 <p>Precision: {precision}% </p>
                 <p>Errors: {errors} </p>
 
                 <button
-                    onClick={handleButtom}
+                    onClick={() => handleButtom('Game')}
                     className="bg-white rounded-full p-2 grid place-content-center"
                 >
                     <IconRepeat color="blue" size={40} />

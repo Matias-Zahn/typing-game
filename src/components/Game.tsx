@@ -1,16 +1,25 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { MenuProps } from '../interfaces/menu.interface';
+import { OptionsProps } from '../interfaces/menu.interface';
 import Results from './Results';
 
 const wordsList = ['hola', 'como', 'estas', 'pepe', 'colorado', 'marron'];
 
-function Game({ window, setWindow }: MenuProps): JSX.Element {
+function Game({ window, setWindow, time }: OptionsProps): JSX.Element {
     const [word, setWord] = useState('');
+
     const [precision, setPrecision] = useState(100);
+
     const [errors, setErrors] = useState(0);
+
     const [score, setScore] = useState(0);
+
     const [timer, setTimer] = useState(true);
+
     const [input, setInput] = useState(false);
+
+    const [totalWords, setTotalWords] = useState(0);
+
+    // Pintar las letras del input si son correctas
 
     const randomWord = (): string => {
         const numberOfElements = Math.ceil(Math.random() * wordsList.length);
@@ -21,13 +30,13 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
     const handleWord = (event: ChangeEvent<HTMLInputElement>): void => {
         const wordInput = event.target.value.toLowerCase();
 
+        //Toma la longitud Minima entre dos palabras
         const longitud = Math.min(wordInput.length, word.length);
 
-        let totalWords = 0;
+        setTotalWords(totalWords + 1);
 
+        console.log(totalWords);
         for (let i = 0; i < longitud; i++) {
-            totalWords++;
-
             if (wordInput[i] !== word[i]) {
                 setErrors(errors + 1);
                 setScore(score - 10);
@@ -39,7 +48,7 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
         }
 
         const porcentaje = Math.floor(
-            ((totalWords - errors) / totalWords) * 100
+            ((totalWords - errors) * 100) / totalWords
         );
 
         //CONTROLAR LA PRECISION Y QUE NO BAJE DE 0
@@ -68,7 +77,7 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
         if (window === 'Game') {
             setTimeout(() => {
                 setTimer(false);
-            }, 10000);
+            }, 100000000);
         }
     }, [window, setTimer, setInput]);
 
@@ -91,7 +100,7 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
                 <article className="flex justify-between">
                     <div className="flex gap-2 bg-black text-white p-4 rounded-lg">
                         <div>
-                            <p>Errores:</p>
+                            <p>Errors:</p>
                             <p>{errors}</p>
                         </div>
                         <div>
@@ -110,15 +119,28 @@ function Game({ window, setWindow }: MenuProps): JSX.Element {
                 </article>
 
                 <div className="grid place-content-center text-center gap-5">
-                    <h1 className="text-2xl uppercase tracking-widest font-bold bg-black text-white rounded-lg py-2">
-                        {word}
+                    <h1
+                        className="flex gap-4 place-items-center justify-center
+                    "
+                    >
+                        {word.split('').map((letter, index) => {
+                            return (
+                                <h2
+                                    key={index}
+                                    className="text-2xl uppercase tracking-widest font-bold bg-black text-white rounded-lg p-2"
+                                >
+                                    {' '}
+                                    {letter}
+                                </h2>
+                            );
+                        })}
                     </h1>
+
                     <input
                         disabled={input}
                         onChange={handleWord}
                         className="outline-none p-2  rounded-xl"
                         type="text"
-                        autoFocus={!input}
                         autoComplete="off"
                     />
                 </div>

@@ -1,4 +1,7 @@
-import { MenuProps } from '../interfaces/menu.interface';
+interface MenuProps {
+    window: string;
+    setWindow: React.Dispatch<string>;
+}
 
 function Menu({ window, setWindow }: MenuProps): JSX.Element {
     return (
@@ -19,7 +22,10 @@ function Menu({ window, setWindow }: MenuProps): JSX.Element {
                     >
                         Start
                     </button>
-                    <button className="font-semibold uppercase tracking-widest hover:bg-orange-500 transition-colors">
+                    <button
+                        onClick={() => setWindow('Options')}
+                        className="font-semibold uppercase tracking-widest hover:bg-orange-500 transition-colors"
+                    >
                         Options
                     </button>
                     <button className="font-semibold uppercase tracking-widest hover:bg-orange-500 transition-colors">

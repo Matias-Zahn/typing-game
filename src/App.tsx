@@ -1,11 +1,14 @@
 import { FormEvent, useState } from 'react';
 import Menu from './components/Menu';
 import Game from './components/Game';
+import Options from './components/Options';
 
 function App(): JSX.Element {
     const [userName, setUserName] = useState('User');
 
     const [window, setWindow] = useState<string>('');
+
+    const [time, setTime] = useState(30000);
 
     const handleUserName = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -65,7 +68,18 @@ function App(): JSX.Element {
             </section>
 
             <Menu window={window} setWindow={setWindow} />
-            <Game window={window} setWindow={setWindow} />
+            <Game
+                window={window}
+                setWindow={setWindow}
+                time={time}
+                setTime={setTime}
+            />
+            <Options
+                window={window}
+                setWindow={setWindow}
+                time={time}
+                setTime={setTime}
+            />
         </main>
     );
 }
